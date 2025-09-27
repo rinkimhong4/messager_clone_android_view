@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,12 +36,19 @@ class ChatsScreen extends StatelessWidget {
       floating: true,
       snap: true,
       centerTitle: false,
-      actions: const [
+      actions: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
-            spacing: 10,
-            children: [Icon(Icons.note_add_outlined), Icon(Icons.facebook)],
+            spacing: 14,
+            children: [
+              Image.asset(
+                'assets/icons/check-square.png',
+                width: 24,
+                height: 24,
+              ),
+              Icon(Icons.facebook),
+            ],
           ),
         ),
       ],
@@ -132,7 +140,9 @@ class ChatsScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
-                                  image: NetworkImage(profileImages[index]),
+                                  image: CachedNetworkImageProvider(
+                                    profileImages[index],
+                                  ),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -226,7 +236,9 @@ class ChatsScreen extends StatelessWidget {
                                   ? Border.all(color: Colors.blue, width: 3)
                                   : null,
                               image: DecorationImage(
-                                image: NetworkImage(profileImages[index]),
+                                image: CachedNetworkImageProvider(
+                                  profileImages[index],
+                                ),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -416,7 +428,7 @@ class ChatsScreen extends StatelessWidget {
                           BorderSide(color: Colors.white, width: 2),
                         ),
                         image: DecorationImage(
-                          image: NetworkImage(
+                          image: CachedNetworkImageProvider(
                             profileImages[index % profileImages.length],
                           ),
                           fit: BoxFit.cover,
@@ -481,7 +493,7 @@ class ChatsScreen extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
-                                        image: NetworkImage(
+                                        image: CachedNetworkImageProvider(
                                           profileImages[index %
                                               profileImages.length],
                                         ),

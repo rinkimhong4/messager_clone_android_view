@@ -45,17 +45,14 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
             label: 'Chats',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.view_sidebar),
+            icon: Icon(CupertinoIcons.person_crop_circle_fill),
             label: 'Stories',
           ),
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.bell_fill),
             label: 'Notifications',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_outlined),
-            label: 'Menu',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.menu_sharp), label: 'Menu'),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue,

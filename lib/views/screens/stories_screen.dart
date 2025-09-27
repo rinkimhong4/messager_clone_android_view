@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:messager_clone_android_view/views/widgets/custom_switch_widget.dart';
 
 class StoriesScreen extends StatefulWidget {
   const StoriesScreen({super.key});
@@ -55,11 +57,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
 
   Widget _buildBody(BuildContext context) {
     return CustomScrollView(
-      slivers: [
-        _buildSliverAppBar(),
-        _buildStoriesRow(),
-        ..._buildGridSlivers(),
-      ],
+      slivers: [_buildSliverAppBar(), ..._buildGridSlivers()],
     );
   }
 
@@ -79,71 +77,12 @@ class _StoriesScreenState extends State<StoriesScreen> {
       floating: true,
       snap: true,
       centerTitle: false,
-      actions: [Icon(Icons.switch_camera_sharp, color: Colors.black)],
-    );
-  }
-
-  // Horizontal Stories Row
-  Widget _buildStoriesRow() {
-    return SliverToBoxAdapter(
-      child: SizedBox(
-        height: 110,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          itemCount: profileImages.length,
-          itemBuilder: (context, index) {
-            bool hasStory = index % 2 == 0; // Story exists every other item
-            bool isViewed = index % 3 != 0; // Viewed if not divisible by 3
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: Column(
-                children: [
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      Container(
-                        width: 68,
-                        height: 68,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: hasStory
-                              ? Border.all(
-                                  color: isViewed ? Colors.grey : Colors.blue,
-                                  width: 3,
-                                )
-                              : null,
-                        ),
-                        child: ClipOval(
-                          child: Image.network(
-                            profileImages[index],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      if (index == 0)
-                        const CircleAvatar(
-                          radius: 10,
-                          backgroundColor: Colors.blue,
-                          child: Icon(Icons.add, size: 16, color: Colors.white),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    index == 0 ? 'Post a note' : userNames[index],
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: CustomAdvanceSwitch(),
         ),
-      ),
+      ],
     );
   }
 
@@ -173,10 +112,12 @@ class _StoriesScreenState extends State<StoriesScreen> {
                 children: [
                   // Background image
                   Positioned.fill(
-                    child: Image.network(
-                      mainImage,
+                    child: CachedNetworkImage(
+                      imageUrl: mainImage,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) =>
+                      placeholder: (context, url) =>
+                          Container(color: Colors.grey[300]),
+                      errorWidget: (context, url, error) =>
                           Container(color: Colors.grey),
                     ),
                   ),
@@ -197,7 +138,9 @@ class _StoriesScreenState extends State<StoriesScreen> {
                       ),
                       child: CircleAvatar(
                         radius: 20,
-                        backgroundImage: NetworkImage(profileImage),
+                        backgroundImage: CachedNetworkImageProvider(
+                          profileImage,
+                        ),
                       ),
                     ),
                   ),
